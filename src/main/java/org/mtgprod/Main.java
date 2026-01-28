@@ -1,17 +1,73 @@
-package org.example;
+package org.mtgprod;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import com.fazecast.jSerialComm.SerialPort;
+import org.mtgprod.clavier.In;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Arrays;
+import java.util.Base64;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        SerialPort port = SerialPort.getCommPort("COM3");
+        port.setBaudRate(57600);
+        port.setParity(SerialPort.NO_PARITY);
+        port.setFlowControl(SerialPort.FLOW_CONTROL_DISABLED);
+        port.setNumDataBits(8);
+        port.setNumStopBits(1);
+
+        if (port.openPort()) {
+            System.out.println("Port ouvert !");
+            // Envoyer "radio tx <payload>" pour envoyer des données sur la bande radio
+            // Mais avant choisir sa bande radio avec "radio set freq 868000000"
+            var mac_get = "mac get appeui";
+            port.writeBytes(mac_get.getBytes(), mac_get.length());
+            port.closePort();
+        } else {
+            System.out.println("Impossible d'ouvrir le port.");
         }
+
+        final float[] SENSOR_DATA = {
+                230.2f,    // u
+                16.35f,    // i
+                49.98f,    // f
+                0.92f,     // k
+                3492.6684f, // p
+                1475.09f,   // q
+                3763.77f,   // s
+                44.8f,      // lat
+                0.0f,       // long
+                372.81f,    // w
+                0.1766f     // prix
+        };
+
+        ByteBuffer lora_buffer = ByteBuffer.allocate(4 * 11);
+        lora_buffer.order(ByteOrder.BIG_ENDIAN);
+
+        for (float data : SENSOR_DATA) {
+            lora_buffer.putFloat(data);
+        }
+
+        var lora_buffer_array = lora_buffer.array();
+
+        var string_payload = toHexString(lora_buffer_array);
+        var base64_payload = Base64.getEncoder().encodeToString(lora_buffer_array);
+
+        System.out.println(base64_payload);
     }
+
+    public static String toHexString(byte[] bytes) {
+        char[] hexArray = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+        char[] hexChars = new char[bytes.length * 2];
+        int v;
+        for ( int j = 0; j < bytes.length; j++ ) {
+            v = bytes[j] & 0xFF;
+            hexChars[j*2] = hexArray[v/16];
+            hexChars[j*2 + 1] = hexArray[v%16];
+        }
+        return new String(hexChars);
+    }
+
 }
