@@ -13,7 +13,7 @@ public class Main {
         System.out.println("Entrez le port série:");
         var userPort = In.readString();
 
-        SerialPort port = SerialPort.getCommPort("userPort");
+        SerialPort port = SerialPort.getCommPort(userPort);
         port.setBaudRate(57600);
         port.setParity(SerialPort.NO_PARITY);
         port.setFlowControl(SerialPort.FLOW_CONTROL_DISABLED);
