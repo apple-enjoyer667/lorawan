@@ -15,7 +15,7 @@ repositories {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "org.mtgprod.lorawan.Main"
+        attributes["Main-Class"] = "org.mtgprod.Main"
     }
 }
 
