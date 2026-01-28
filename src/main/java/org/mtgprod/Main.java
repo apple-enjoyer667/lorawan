@@ -32,6 +32,19 @@ public class Main {
             // Mais avant choisir sa bande radio avec "radio set freq 868000000"
             var mac_get = "mac get appeui";
             port.writeBytes(mac_get.getBytes(), mac_get.length());
+
+            try {
+                while (true)
+                {
+                    while (port.bytesAvailable() == 0)
+                        Thread.sleep(20);
+
+                    byte[] readBuffer = new byte[port.bytesAvailable()];
+                    int numRead = port.readBytes(readBuffer, readBuffer.length);
+                    System.out.println("Read " + numRead + " bytes.");
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+
             port.closePort();
         } else {
             System.out.println("Impossible d'ouvrir le port.");
