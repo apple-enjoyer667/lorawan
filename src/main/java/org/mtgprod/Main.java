@@ -5,13 +5,15 @@ import org.mtgprod.clavier.In;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 import java.util.Base64;
 
 public class Main {
     public static void main(String[] args) {
 
-        SerialPort port = SerialPort.getCommPort("COM3");
+        System.out.println("Entrez le port série:");
+        var userPort = In.readString();
+
+        SerialPort port = SerialPort.getCommPort("userPort");
         port.setBaudRate(57600);
         port.setParity(SerialPort.NO_PARITY);
         port.setFlowControl(SerialPort.FLOW_CONTROL_DISABLED);
