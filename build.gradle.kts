@@ -13,6 +13,12 @@ repositories {
     }
 }
 
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "org.mtgprod.lorawan.Main"
+    }
+}
+
 dependencies {
     implementation("com.fazecast:jSerialComm:2.11.4")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
