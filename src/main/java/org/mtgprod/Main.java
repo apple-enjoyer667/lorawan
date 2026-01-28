@@ -10,6 +10,12 @@ import java.util.Base64;
 public class Main {
     public static void main(String[] args) {
 
+        System.out.println("Liste des ports disponibles :");
+        SerialPort[] ports = SerialPort.getCommPorts();
+        for (SerialPort port : ports) {
+            System.out.println(port.getSystemPortName());
+        }
+
         System.out.println("Entrez le port série:");
         var userPort = In.readString();
 
