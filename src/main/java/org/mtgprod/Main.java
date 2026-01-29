@@ -3,6 +3,7 @@ package org.mtgprod;
 import com.fazecast.jSerialComm.SerialPort;
 import org.mtgprod.clavier.In;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Base64;
@@ -36,16 +37,12 @@ public class Main {
             port.writeBytes(mac_get.getBytes(), mac_get.length());
             port.writeBytes(sys_get.getBytes(), sys_get.length());
 
-            try {
-                while (true)
-                {
-                    while (port.bytesAvailable() == 0)
-                        Thread.sleep(20);
-
-                    byte[] readBuffer = new byte[port.bytesAvailable()];
-                    int numRead = port.readBytes(readBuffer, readBuffer.length);
-                    System.out.println("Read " + numRead + " bytes.");
-                }
+            InputStream in = port.getInputStream();
+            try
+            {
+                for (int j = 0; j < 1000; ++j)
+                    System.out.print((char)in.read());
+                in.close();
             } catch (Exception e) { e.printStackTrace(); }
 
             port.closePort();
