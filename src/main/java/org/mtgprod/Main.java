@@ -28,10 +28,13 @@ public class Main {
 
         if (port.openPort()) {
             System.out.println("Port ouvert !");
+            port.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 0, 0);
             // Envoyer "radio tx <payload>" pour envoyer des données sur la bande radio
             // Mais avant choisir sa bande radio avec "radio set freq 868000000"
             var mac_get = "mac get appeui";
+            var sys_get = "sys get hweui";
             port.writeBytes(mac_get.getBytes(), mac_get.length());
+            port.writeBytes(sys_get.getBytes(), sys_get.length());
 
             try {
                 while (true)
@@ -77,6 +80,7 @@ public class Main {
         var base64_payload = Base64.getEncoder().encodeToString(lora_buffer_array);
 
         System.out.println(base64_payload);
+        System.out.println(string_payload);
     }
 
     public static String toHexString(byte[] bytes) {
