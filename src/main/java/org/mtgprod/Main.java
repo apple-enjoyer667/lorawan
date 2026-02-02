@@ -20,6 +20,31 @@ public class Main {
         System.out.println("Entrez le port série:");
         var userPort = In.readString();
 
+        LoRaEventListener lora = new LoRaEventListener(userPort, 57600);
+
+        if (lora.connect()) {
+            System.out.println("Connecté au module LoRa");
+
+            // Envoyer des commandes ou données
+            lora.send("mac get appeui\r\n");
+
+            // Garder le programme en vie
+            try {
+                Thread.sleep(60000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        /*System.out.println("Liste des ports disponibles :");
+        SerialPort[] ports = SerialPort.getCommPorts();
+        for (SerialPort port : ports) {
+            System.out.println(port.getSystemPortName());
+        }
+
+        System.out.println("Entrez le port série:");
+        var userPort = In.readString();
+
         SerialPort port = SerialPort.getCommPort(userPort);
         port.setBaudRate(57600);
         port.setParity(SerialPort.NO_PARITY);
@@ -48,7 +73,7 @@ public class Main {
             port.closePort();
         } else {
             System.out.println("Impossible d'ouvrir le port.");
-        }
+        }*/
 
         final float[] SENSOR_DATA = {
                 230.2f,    // u
