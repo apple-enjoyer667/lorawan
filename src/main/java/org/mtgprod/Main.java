@@ -27,6 +27,7 @@ public class Main {
 
             // Envoyer des commandes ou données
             lora.send("mac get appeui\r\n");
+            lora.send("mac get appeui");
 
             // Garder le programme en vie
             try {
