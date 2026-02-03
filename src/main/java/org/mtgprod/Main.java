@@ -20,7 +20,7 @@ public class Main {
         System.out.println("Entrez le port série:");
         var userPort = In.readString();
 
-        LoRaEventListener lora = new LoRaEventListener(userPort, 57600);
+        LoRaEventListener lora = new LoRaEventListener(userPort, 9600);
 
         if (lora.connect()) {
             System.out.println("Connecté au module LoRa");
