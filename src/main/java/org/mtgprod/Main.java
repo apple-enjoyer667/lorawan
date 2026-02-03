@@ -27,6 +27,7 @@ public class Main {
 
             // Envoyer des commandes ou données
             lora.send("sys get ver\r\n");
+            System.out.println("envoyé fils di pite");
             lora.send("mac get appeui\r\n");
 
             // Garder le programme en vie
