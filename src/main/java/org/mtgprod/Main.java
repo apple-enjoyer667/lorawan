@@ -11,31 +11,40 @@ import java.util.Base64;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Liste des ports disponibles :");
+        /*System.out.println("Liste des ports disponibles :");
         SerialPort[] ports = SerialPort.getCommPorts();
         for (SerialPort port : ports) {
             System.out.println(port.getSystemPortName());
         }
 
         System.out.println("Entrez le port série:");
-        var userPort = In.readString();
+        var userPort = In.readString();*/
 
-        LoRaEventListener lora = new LoRaEventListener(userPort, 9600);
+        // 1. Créer la configuration
+        RN2483Communicator.Config config = new RN2483Communicator.Config("/dev/ttyAMA0");
 
-        if (lora.connect()) {
-            System.out.println("Connecté au module LoRa");
+// 2. Créer l'instance
+        RN2483Communicator lora = new RN2483Communicator();
 
-            // Envoyer des commandes ou données
-            lora.send("sys get ver\r\n");
-            System.out.println("envoyé fils di pite");
-            lora.send("mac get appeui\r\n");
+// 3. Définir les callbacks
+        lora.setDebugCallback(msg -> System.out.println("DEBUG: " + msg));
+        lora.setMessageCallback(msg -> {
+            System.out.println("Message reçu: " + msg);
+            // Traiter les messages LoRa ici
+        });
 
-            // Garder le programme en vie
-            try {
-                Thread.sleep(60000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+// 4. Se connecter
+        if (lora.connect(config)) {
+            // 5. Tester la communication
+            String version = lora.getVersion();
+            System.out.println("Version: " + version);
+
+            // 6. Envoyer des commandes
+            lora.pauseMAC();
+            lora.setPower(14);
+
+            // 7. Garder le programme actif
+            // Le thread d'écoute continue à tourner en arrière-plan
         }
 
         /*System.out.println("Liste des ports disponibles :");
