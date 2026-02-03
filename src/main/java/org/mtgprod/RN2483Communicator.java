@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 public class RN2483Communicator {
 
     // Configuration UART pour le RN2483A
-    private static final int DEFAULT_BAUD_RATE = 57600; // Baud rate par défaut
+    private static final int DEFAULT_BAUD_RATE = 9600; // Baud rate par défaut
     private static final int DATA_BITS = 8;
     private static final int STOP_BITS = SerialPort.ONE_STOP_BIT;
     private static final int PARITY = SerialPort.NO_PARITY;
