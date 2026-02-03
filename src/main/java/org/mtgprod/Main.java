@@ -26,8 +26,8 @@ public class Main {
             System.out.println("Connecté au module LoRa");
 
             // Envoyer des commandes ou données
+            lora.send("sys get ver\r\n");
             lora.send("mac get appeui\r\n");
-            lora.send("mac get appeui");
 
             // Garder le programme en vie
             try {

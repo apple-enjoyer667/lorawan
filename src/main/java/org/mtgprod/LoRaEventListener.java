@@ -8,6 +8,10 @@ public class LoRaEventListener {
     public LoRaEventListener(String portName, int baudRate) {
         serialPort = SerialPort.getCommPort(portName);
         serialPort.setBaudRate(baudRate);
+        serialPort.setParity(SerialPort.NO_PARITY);
+        serialPort.setFlowControl(SerialPort.FLOW_CONTROL_DISABLED);
+        serialPort.setNumDataBits(8);
+        serialPort.setNumStopBits(1);
         serialPort.setComPortTimeouts(
                 SerialPort.TIMEOUT_READ_SEMI_BLOCKING,
                 100,
